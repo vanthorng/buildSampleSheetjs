@@ -1,44 +1,48 @@
-<script setup>
-defineProps({
-  msg: {
-    type: String,
-    required: true,
-  },
-})
-</script>
-
 <template>
-  <div class="greetings">
-    <h1 class="green">{{ msg }}</h1>
-    <h3>
-      You’ve successfully created a project with
-      <a href="https://vite.dev/" target="_blank" rel="noopener">Vite</a> +
-      <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a>.
-    </h3>
-  </div>
+  <div id="spreadsheet" style="width: 100%; height: 500px;"></div>
 </template>
 
-<style scoped>
-h1 {
-  font-weight: 500;
-  font-size: 2.6rem;
-  position: relative;
-  top: -10px;
-}
+<script>
+import Spreadsheet from "x-data-spreadsheet";
+import "x-data-spreadsheet/dist/xspreadsheet.css";
 
-h3 {
-  font-size: 1.2rem;
-}
+export default {
+  name: "SpreadsheetViewer",
+  mounted() {
+    const sheet = new Spreadsheet("#spreadsheet", {
+      showToolbar: true,
+      showGrid: true,
+      showContextmenu: true,
+    }).loadData({
+      // sample data
+      styles: [],
+      sheets: [
+        {
+          name: "Sheet1",
+          freeze: "A1",
+          styles: [],
+          merges: [],
+          rows: {
+            0: {
+              cells: {
+                0: { text: "Hello" },
+                1: { text: "World" },
+              },
+            },
+          },
+        },
+      ],
+    });
 
-.greetings h1,
-.greetings h3 {
-  text-align: center;
-}
+    // You can access the data later like this:
+    // const data = sheet.getData();
+  },
+};
+</script>
 
-@media (min-width: 1024px) {
-  .greetings h1,
-  .greetings h3 {
-    text-align: left;
-  }
+<style>
+/* Optional: make sure the spreadsheet fills the container */
+#spreadsheet {
+  border: 1px solid #ccc;
 }
 </style>
